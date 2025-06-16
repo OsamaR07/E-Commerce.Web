@@ -1,5 +1,7 @@
 
+using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 using Persistence.Data;
 
 namespace E_Commerce.Web
@@ -22,9 +24,15 @@ namespace E_Commerce.Web
                     )
                 );
 
+            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+
             #endregion
 
             var app = builder.Build();
+
+            using var scope = app.Services.CreateScope();
+            var seeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+            seeding.DataSeed();
 
             #region Configure the HTTP request pipeline.
 
