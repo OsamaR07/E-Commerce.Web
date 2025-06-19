@@ -1,9 +1,9 @@
-
 using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
 using Persistence.Repositories;
+using Service.MappingProfiles;
 
 namespace E_Commerce.Web
 {
@@ -19,14 +19,13 @@ namespace E_Commerce.Web
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<StoreDbContext>(
-                o => o.UseSqlServer(
+            builder.Services.AddDbContext<StoreDbContext>(o => o.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")
-                    )
-                );
+                )
+            );
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+            builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
 
             #endregion
 
